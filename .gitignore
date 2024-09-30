@@ -1,0 +1,50 @@
+# Ignora i file di sistema
+.DS_Store
+Thumbs.db
+
+# Ignora cartelle dei moduli di Node.js e dei pacchetti globali
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Ignora i file di configurazione di ESLint e Prettier generati automaticamente
+.eslintcache
+
+# Ignora i file di log
+*.log
+
+# Ignora le cartelle di build o compilazione, se presenti
+dist/
+build/
+
+# Ignora i file temporanei creati dagli editor di testo
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+*.save
+
+# Ignora le configurazioni degli editor e gli ambienti di sviluppo
+.vscode/
+.idea/
+*.iml
+
+# Ignora i file di configurazione di sistema (macOS)
+.DS_Store
+
+# Ignora i file relativi a ESLint e Prettier che non vuoi includere nel repository
+*.eslintcache
+
+# Se stai usando un ambiente di sviluppo virtuale o un ambiente locale
+.env
+.env.local
+.env.*.local
+
+# Ignora le cartelle dei test e gli output dei test
+coverage/
+test-output/
+*.test.js
+*.spec.js

@@ -1,0 +1,32 @@
+{
+    "name": "CignoApp",
+    "version": "1.0.0",
+    "author": "Roberto Mauro",
+    "description": "Estensione di cigno.app per caricare script e css custom",
+    "url": "https://www.cigno.app",
+    "license-name": "MIT",
+    "type": "parserhook",
+    "manifest_version": 2,
+    "AutoloadClasses": {
+        "CignoAppHooks": "includes/CignoAppHooks.php"
+    },
+    "Hooks": {
+        "BeforePageDisplay": "CignoAppHooks::onBeforePageDisplay"
+    },
+    "ResourceModules": {
+        "ext.CignoApp": {
+            "styles": [
+                "extensions/CignoApp/assets/css/styles.min.css"
+            ],
+            "scripts": [
+                "extensions/CignoApp/assets/js/app.min.js"
+            ],
+            "position": "bottom"
+        }
+    },
+    "MessagesDirs": {
+        "CignoApp": [
+            "i18n"
+        ]
+    }
+}

@@ -1,0 +1,1 @@
+console.log("ext.CignoApp has been loaded successfully!");
