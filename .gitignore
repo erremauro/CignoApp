@@ -18,6 +18,7 @@ pnpm-debug.log*
 # Ignora le cartelle di build o compilazione, se presenti
 dist/
 build/
+assets/
 
 # Ignora i file temporanei creati dagli editor di testo
 *.swp

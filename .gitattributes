@@ -1,11 +1,14 @@
 # Exclude the source code folder
 src/ export-ignore
+public/ export-ignore
 
 # Exclude source specific files
+.babelrc export-ignore
 .gitattributes export-ignore
 .editorconfig export-ignore
 .gitignore export-ignore
 eslint.config.js export-ignore
+jest.config.js export-ignore
 package-lock.json export-ignore
 package.json export-ignore
 webpack.config.js export-ignore

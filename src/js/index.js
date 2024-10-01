@@ -1,1 +1,4 @@
-console.log("ext.CignoApp has been loaded successfully!");
+require("../sass/styles.scss");
+const renderSong = require("./lib/render-song.js");
+
+renderSong();

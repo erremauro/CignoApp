@@ -16,7 +16,7 @@
     "ResourceModules": {
         "ext.CignoApp": {
             "styles": [
-                "extensions/CignoApp/assets/css/styles.min.css"
+                "extensions/CignoApp/assets/css/app.min.css"
             ],
             "scripts": [
                 "extensions/CignoApp/assets/js/app.min.js"

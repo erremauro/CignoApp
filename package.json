@@ -5,28 +5,32 @@
   "main": "CignoApp.php",
   "scripts": {
     "build": "webpack --mode production",
+    "watch": "webpack --watch --mode production",
+    "serve": "webpack serve --mode development",
+    "test": "jest",
     "lint": "eslint src/js --ext .js",
     "format": "prettier --write 'src/**/*.{js,scss}'"
   },
   "author": "Roberto Mauro",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.21.0",
-    "@babel/preset-env": "^7.21.0",
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
     "babel-loader": "^9.1.0",
+    "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.3",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "jest-environment-jsdom": "^29.7.0",
     "mini-css-extract-plugin": "^2.7.5",
     "prettier": "^3.0.0",
-    "sass": "^1.63.6",
-    "sass-loader": "^13.3.2",
+    "sass": "^1.79.4",
+    "sass-loader": "^13.3.3",
+    "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.9",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1",
-    "clean-webpack-plugin": "^4.0.0"
-  },
-  "dependencies": {}
+    "webpack-dev-server": "^4.15.2"
+  }
 }

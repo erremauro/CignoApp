@@ -1,18 +1,28 @@
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
+const isProduction = process.argv[process.argv.indexOf('--mode') + 1] === 'production';
 
 module.exports = {
-  mode: 'production', // Usa 'development' per il debug
   entry: {
-    app: './src/js/index.js',
-    styles: './src/sass/styles.scss',
+    app: "./src/js/index.js",
   },
   output: {
-    iife: true,
-    path: path.resolve(__dirname, 'assets'),
-    filename: 'js/[name].min.js',
+    path: path.resolve(__dirname, "assets"),
+    filename: "js/[name].min.js",
+    publicPath: "/assets/",
+  },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "public"),
+      watch: true,
+    },
+    compress: true,
+    port: 9000,
+    hot: true,
+    open: true,
   },
   module: {
     rules: [
@@ -20,18 +30,23 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env'],
+            presets: ["@babel/preset-env"],
           },
         },
       },
       {
         test: /\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
+          isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              api: "modern",
+            },
+          },
         ],
       },
     ],
@@ -39,7 +54,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].min.css',
+      filename: "css/[name].min.css",
     }),
   ],
   optimization: {
