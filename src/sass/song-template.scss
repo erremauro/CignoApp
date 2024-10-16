@@ -1,0 +1,73 @@
+$highlight-color: #2e6ab1;
+
+@mixin pre-content {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+.song {
+  width: 100%;
+  line-height: 1.2;
+
+  .chords,
+  .header,
+  .footer,
+  .info {
+    @include pre-content;
+  }
+
+  .chords {
+    &::before {
+      content: "[CHORDS]\A\A";
+    }
+
+    .chord-name {
+      color: $highlight-color;
+      font-weight: bolder;
+    }
+  }
+
+  .song-content {
+    @include pre-content;
+    border: 0px;
+    background-color: transparent;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+
+    .song-column {
+      width: 48%;
+
+      .highlight {
+        color: $highlight-color;
+        font-weight: bolder;
+      }
+    }
+  }
+}
+
+@mixin smaller-screens {
+  .song-content {
+    flex-direction: column;
+  }
+
+  .song-column {
+    width: 100%;
+    margin-bottom: 2em;
+  }
+
+  .song-column:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (min-device-width: 428px) and (max-width: 430px) and (-webkit-device-pixel-ratio: 3) {
+  @include smaller-screens;
+}
+
+/* Media query per schermi più piccoli */
+@media screen and (max-width: 768px) {
+  @include smaller-screens;
+}
