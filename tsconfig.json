@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./assets/js",
+    "sourceMap": true,
+    "target": "es5",
+    "module": "es6",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+  },
+  "include": ["src/typescript/**/*.ts"],
+  "exclude": ["node_modules"]
+}

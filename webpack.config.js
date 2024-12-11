@@ -1,64 +1,58 @@
-const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-
-const isProduction = process.argv[process.argv.indexOf('--mode') + 1] === 'production';
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: {
-    app: "./src/js/index.js",
-  },
+  entry: './src/typescript/index.ts',
   output: {
-    path: path.resolve(__dirname, "assets"),
-    filename: "js/[name].min.js",
-    publicPath: "/assets/",
+    filename: 'js/bundle.min.js',
+    path: path.resolve(__dirname, 'assets'),
+    publicPath: '/',
   },
-  devServer: {
-    static: {
-      directory: path.join(__dirname, "public"),
-      watch: true,
-    },
-    compress: true,
-    port: 9000,
-    hot: true,
-    open: true,
+  resolve: {
+    extensions: ['.ts', '.js'],
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-          },
-        },
       },
       {
         test: /\.scss$/,
         use: [
-          isProduction ? MiniCssExtractPlugin.loader : "style-loader",
-          "css-loader",
-          {
-            loader: "sass-loader",
-            options: {
-              api: "modern",
-            },
-          },
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader'
         ],
-      },
-    ],
+        include: path.resolve(__dirname, 'src/sass'),
+      }
+    ]
   },
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: "css/[name].min.css",
+      filename: 'css/styles.min.css',
     }),
+    new CssMinimizerPlugin(),
+    new TerserPlugin(),
   ],
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimizer: [
+      new TerserPlugin(),
+      new CssMinimizerPlugin(),
+    ],
   },
+  devServer: {
+    static: path.resolve(__dirname, 'public'),
+    liveReload: true,
+    watchFiles: ['src/**/*', 'public/**/*'],
+    open: true,
+    port: 9200,
+  },
+  mode: 'development',
 };

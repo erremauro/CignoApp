@@ -1,0 +1,33 @@
+.recipe-calc {
+  margin-top: 1em;
+
+  caption {
+    font-weight: bold;
+    text-align: left;
+    font-size: 1.2em;
+    margin-bottom: 1em;
+  }
+
+  input[type=number] {
+    padding: 0.5em;
+    border: 1px solid #ddd;
+    border-radius: 0.2em;
+    max-width: 8em;
+  }
+
+  .people-container {
+    padding: 0.25em;
+
+    label {
+      margin-right: 1em;
+    }
+  }
+
+  .ingredient-table {
+    margin: 1em 0em;
+    border-collapse: collapse;
+    td {
+      padding: 0.25em;
+    }
+  }
+}
