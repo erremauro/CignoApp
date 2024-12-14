@@ -53,7 +53,7 @@ export class RecipeCalc {
    * initilize the internal recipe reference and state
    */
   private parseRecipe() {
-    const htmlText = this.container.innerHTML;
+    const htmlText = this.container.textContent;
     if (!htmlText) return;
 
     // Clean HTML text from tabs characters (yaml only read spaces)
