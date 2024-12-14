@@ -59,7 +59,15 @@ export class RecipeCalc {
     // Clean HTML text from tabs characters (yaml only read spaces)
     const cleanedYaml = htmlText.replace(/\t/g, "  ");
 
-    const recipe = jsYaml.load(cleanedYaml) as tRecipe;
+    let recipe;
+
+    try {
+      recipe = jsYaml.load(cleanedYaml) as tRecipe;
+    } catch (_e) {
+      const err = _e as Error;
+      conole.error(`Unable to parse YAML content: ${err.message}`);
+      throw err;
+    }
 
     // Create the internal recipe reference and
     // initilize each ingredient's uuid
