@@ -65,7 +65,7 @@ export class RecipeCalc {
       recipe = jsYaml.load(cleanedYaml) as tRecipe;
     } catch (_e) {
       const err = _e as Error;
-      conole.error(`Unable to parse YAML content: ${err.message}`);
+      logger.error(`Unable to parse YAML content: ${err.message}`);
       throw err;
     }
 
