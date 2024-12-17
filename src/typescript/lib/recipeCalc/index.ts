@@ -4,7 +4,8 @@ import { debounce, generateUUID } from "../utils";
 import {
   STANDARD_UNIT,
   FRACTIONAL_UNIT,
-  INGREDIENT_DENSITY
+  INGREDIENT_DENSITY,
+  UNIT_TO_ML,
 } from "./constants";
 import { isValidFraction, convertToFraction, parseFraction } from "./fraction";
 
@@ -384,20 +385,12 @@ export class RecipeCalc {
 
     const [, densityInfo] = densityEntry;
 
-    let volumeInMl = 0;
-    switch (unit) {
-      case "cucchiaio":
-        volumeInMl = value * 15; // 1 cucchiaio = 15 ml
-        break;
-      case "cucchiaino":
-        volumeInMl = value * 5; // 1 cucchiaino = 5 ml
-        break;
-      case "tazza":
-        volumeInMl = value * 240; // 1 tazza = 240 ml
-        break;
-      default:
-        return null;
-    }
+    // Recupera il valore in millilitri dalla costante UNIT_TO_ML
+    const volumeInMl = UNIT_TO_ML[unit.toLowerCase()]
+      ? value * UNIT_TO_ML[unit.toLowerCase()]
+      : 0;
+
+    if (volumeInMl === 0) return null;
 
     const weightInGrams = volumeInMl * densityInfo.density;
 
