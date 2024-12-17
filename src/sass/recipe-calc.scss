@@ -8,11 +8,26 @@
     margin-bottom: 1em;
   }
 
-  input[type=number] {
+  input[type=number],
+  input.fraction {
     padding: 0.5em;
     border: 1px solid #ddd;
     border-radius: 0.2em;
     max-width: 8em;
+  }
+
+  input.fraction.invalid {
+    color: red;
+  }
+
+  .input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .unit-label, .conversion-label {
+    color: #555;
   }
 
   .people-container {

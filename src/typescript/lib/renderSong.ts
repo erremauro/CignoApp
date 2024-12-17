@@ -1,3 +1,5 @@
+import logger from "./logger";
+
 const CHORD_LINE_PATTERN: RegExp =
   /\b([A-G])(#|b)?(m|dim|aug)?(maj|min|m|M|sus|add)?\d{0,2}(\/[A-G](#|b)?)?\b/g;
 const COLUMN_SEPARATOR_PATTERN: RegExp = /^---/;
@@ -5,9 +7,12 @@ const COLUMN_SEPARATOR_PATTERN: RegExp = /^---/;
 ////////////////////////////////////////////////
 
 export function renderSong(): void {
-  const containerAll: NodeListOf<Element> = document.querySelectorAll(".song");
+  const containerAll = document.querySelectorAll<HTMLElement>(".song");
 
-  if (!containerAll.length) return;
+  if (containerAll.length === 0) {
+    logger.info(`(Song) no recipe calculator found.`);
+    return;
+  }
 
   containerAll.forEach((container) => {
     processChordSection(container as HTMLElement);
@@ -25,7 +30,8 @@ function processChordSection(container: HTMLElement): void {
   const textLines: string[] = textContent.trim().split("\n");
   const fragment: DocumentFragment = document.createDocumentFragment();
 
-  const chordList: string[][] = textLines.map((line) => line.split(/\s{2,}/));
+  const chordList: string[][] = textLines.map((line) => line.trim().split(/\s{2,}/));
+
   const maxLength: number = chordList.reduce(
     (max, chords) => Math.max(max, chords[0].length),
     0,

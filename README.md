@@ -69,3 +69,29 @@ And the only one you can tell it to
               Em                  D   (D*)
 Well it's the only one that ever knows          
 ```
+
+## Calcolatore Ingredienti
+
+È possibile creare un calcolatore di proprorzioni per gli ingredienti di una ricetta usando il codice di markup:
+
+```html
+<div class="recipe-calc">
+  ...
+</div>
+```
+
+### Ingredenti
+
+Per specificare gli ingredienti all'interno del calcolatore, è sufficiente usare una struttura di dati markdown come:
+
+```markdown
+# Risotto Alla Zucca
+servings: 2
+## Per la Pasta
+- "Trofie o Linguine" 80g
+- "Sale Grosso" q.b.
+## Per il Pesto
+- "Basilico" 8g
+- "Olio EVO" 1/2cucchiaio
+...
+```
