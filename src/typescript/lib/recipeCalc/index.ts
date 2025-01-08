@@ -42,7 +42,10 @@ export class RecipeCalc {
     const lines = textContent.split("\n").map((line) => line.trim());
     const recipe: Partial<tRecipe> = {
       title: "",
-      servings: 0,
+      servings: {
+        value: 0,
+        unit: ""
+      },
       ingredients: [],
     };
     const ingredientMap: Record<string, Omit<tIngredient, "uuid">> = {};
@@ -54,7 +57,18 @@ export class RecipeCalc {
       if (line.startsWith("# ")) {
         recipe.title = line.slice(2).trim();
       } else if (line.startsWith("servings: ")) {
-        recipe.servings = parseInt(line.split(":")[1].trim(), 10);
+        const servingsText = line.split(":")[1].trim();
+        const match = servingsText.match(/^(\d+)([a-zA-Z]*)$/);
+        if (match) {
+          if (!recipe.servings) {
+            recipe.servings = {
+              value: 0,
+              unit: ""
+            }
+          }
+          recipe.servings.value = parseInt(match[1], 10);
+          recipe.servings.unit = match[2] || "";
+        }
       } else if (line.startsWith("## ")) {
         if (currentSection)
           recipe.ingredients!.push(currentSection as tSection);
@@ -99,7 +113,7 @@ export class RecipeCalc {
 
     this.recipe = recipe as tRecipe;
     this.state = {
-      servings: this.recipe.servings,
+      servings: Object.assign({}, this.recipe.servings),
       ingredients: ingredientMap,
     };
   }
@@ -109,26 +123,37 @@ export class RecipeCalc {
    */
   private renderContent() {
     this.container.innerHTML = "";
-
+    
     // Render People/Servings Container
-    const peopleContainer = document.createElement("div");
-    peopleContainer.classList.add("people-container");
+    const servingsContainer = document.createElement("div");
+    servingsContainer.classList.add("servings-container");
 
-    const peopleLabel: HTMLElement = document.createElement("label");
-    peopleLabel.setAttribute("for", "people");
-    peopleLabel.innerHTML = "People";
+    const servingsLabel: HTMLElement = document.createElement("label");
+    servingsLabel.setAttribute("for", "servings");
+    servingsLabel.innerHTML = "Servings";
 
-    const peopleInput: HTMLInputElement = document.createElement("input");
-    peopleInput.setAttribute("id", "people");
-    peopleInput.setAttribute("name", "people");
-    peopleInput.setAttribute("type", "number");
-    peopleInput.setAttribute("min", "1");
-    peopleInput.setAttribute("value", String(this.recipe.servings));
+    let servingsInput: HTMLElement = document.createElement("input");
+    servingsInput.setAttribute("id", "servings");
+    servingsInput.setAttribute("name", "servings");
+    servingsInput.setAttribute("type", "number");
+    servingsInput.setAttribute("min", "1");
+    servingsInput.setAttribute("value", String(this.recipe.servings.value));
 
-    peopleContainer.appendChild(peopleLabel);
-    peopleContainer.appendChild(peopleInput);
+    const unitSpan = document.createElement("span");
+    unitSpan.classList.add("unit-label");
+    unitSpan.innerText = this.recipe.servings.unit || "";
 
-    this.container.appendChild(peopleContainer);
+    const inputWrapper = document.createElement("div");
+    inputWrapper.classList.add("input-with-unit");
+    inputWrapper.appendChild(servingsInput);
+    inputWrapper.appendChild(unitSpan);
+
+    servingsInput = inputWrapper;
+
+    servingsContainer.appendChild(servingsLabel);
+    servingsContainer.appendChild(servingsInput);
+
+    this.container.appendChild(servingsContainer);
 
     // Render Each Section
     this.recipe.ingredients.forEach((ingredient: tSection) => {
@@ -159,18 +184,6 @@ export class RecipeCalc {
         } else {
           // Crea input numerico standard
           inputElement = this.createNumericInput(item);
-
-          // Aggiungi unità manualmente solo per gli input numerici
-          const unitSpan = document.createElement("span");
-          unitSpan.classList.add("unit-label");
-          unitSpan.innerText = item.unit || "";
-
-          const inputWrapper = document.createElement("div");
-          inputWrapper.classList.add("input-with-unit");
-          inputWrapper.appendChild(inputElement);
-          inputWrapper.appendChild(unitSpan);
-
-          inputElement = inputWrapper;
         }
 
         amountCell.appendChild(inputElement);
@@ -188,7 +201,7 @@ export class RecipeCalc {
       "input",
       debounce((event: Event) => {
         const target = event.target as HTMLInputElement;
-        if (target.id === "people") {
+        if (target.id === "servings") {
           this.updateServings(target);
         } else if (target.classList.contains("quantity")) {
           this.updateQuantities(target);
@@ -231,15 +244,16 @@ export class RecipeCalc {
   }
 
   private updateServings(elem: HTMLInputElement) {
+
     const newNumberOfServings: number = Number(elem.value);
 
-    if (newNumberOfServings === this.state.servings) return;
+    if (newNumberOfServings === this.state.servings.value) return;
 
-    this.state.servings = newNumberOfServings;
+    this.state.servings.value = newNumberOfServings;
 
     this.ingredients.forEach((item) => {
       const newValue =
-        (item.value * newNumberOfServings) / this.recipe.servings;
+        (item.value * newNumberOfServings) / this.recipe.servings.value;
       this.state.ingredients[item.uuid].value = newValue;
 
       const inputElem = document.getElementById(item.uuid) as HTMLInputElement;
@@ -283,13 +297,25 @@ export class RecipeCalc {
     }
   }
 
-  private createNumericInput(item: tIngredient): HTMLInputElement {
-    const amountInput: HTMLInputElement = document.createElement("input");
+  private createNumericInput(item: tIngredient): HTMLElement {
+    let amountInput: HTMLElement = document.createElement("input");
     amountInput.classList.add("quantity");
     amountInput.setAttribute("id", item.uuid);
     amountInput.setAttribute("value", String(item.value));
     amountInput.setAttribute("type", "number");
     amountInput.setAttribute("min", "0");
+
+    const unitSpan = document.createElement("span");
+    unitSpan.classList.add("unit-label");
+    unitSpan.innerText = item.unit || "";
+
+    const inputWrapper = document.createElement("div");
+    inputWrapper.classList.add("input-with-unit");
+    inputWrapper.appendChild(amountInput);
+    inputWrapper.appendChild(unitSpan);
+
+    amountInput = inputWrapper;
+
     return amountInput;
   }
 

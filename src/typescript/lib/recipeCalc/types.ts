@@ -10,13 +10,18 @@ export type tSection = {
   items: tIngredient[];
 };
 
+export type tServings = {
+  value: number,
+  unit: string
+}
+
 export type tRecipe = {
   title: string;
-  servings: number;
+  servings: tServings;
   ingredients: tSection[];
 };
 
 export type tState = {
-  servings: number;
+  servings: tServings;
   ingredients: Record<string, Omit<tIngredient, "uuid">>;
 };
