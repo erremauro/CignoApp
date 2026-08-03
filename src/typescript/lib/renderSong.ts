@@ -37,7 +37,7 @@ function processChordSection(container: HTMLElement): void {
     0,
   );
 
-  chordList.forEach(([chordName, chordShape]) => {
+  chordList.forEach(([chordName = "", chordShape = ""]) => {
     const spacesNeeded: number = maxLength - chordName.length + 2;
     const spaces: string = " ".repeat(spacesNeeded);
 
